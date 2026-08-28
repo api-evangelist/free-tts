@@ -1,0 +1,97 @@
+generated: '2026-08-28'
+method: searched
+source: https://freetts.org/developers
+also_read:
+- https://freetts.org/pricing
+- https://freetts.org/terms
+- https://freetts.org/llms.txt
+probed: '2026-08-28'
+versioning:
+  scheme: URI path (/api/v1/)
+  current_version: v1
+  policy_published: false
+  note: >-
+    No versioning policy, no version-support window, no changelog. Four of the
+    five documented endpoints carry no version segment at all - see
+    conventions/freetts-conventions.yml.
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+  note: >-
+    No deprecation policy exists on any page of the site, and no Sunset or
+    Deprecation header appeared on any probed response. No `Deprecation` pointer
+    is emitted.
+status_page:
+  present: false
+  url: null
+  probes:
+  - url: https://freetts.org/status
+    status: 404
+  - url: https://status.freetts.org
+    status: DNS NXDOMAIN
+  note: >-
+    The site footer renders the string "All systems operational" on every page,
+    but it links nowhere and there is no status page behind it. /status returns
+    the Next.js 404 and status.freetts.org does not resolve. A static
+    "operational" badge with no incident history is a claim, not a status page,
+    so no `StatusPage` pointer is emitted. The closest real thing is the
+    unauthenticated GET /api/health endpoint, which returned 200
+    {"status":"ok","timestamp":1787912938} - undocumented on /developers but
+    live, and the only machine-readable availability signal FreeTTS has.
+health_endpoint:
+  url: https://freetts.org/api/health
+  status: 200
+  body: '{"status":"ok","timestamp":<unix epoch>}'
+  documented: false
+  method: probed
+sla:
+  published: false
+  support:
+    free: no stated response time
+    pro: email support, 24h
+    creator: priority support, 4h
+  source: https://freetts.org/pricing
+retention:
+  free: 1 hour
+  pro: 30 days
+  creator: 90 days
+  note: >-
+    Generated MP3 and SRT files are deleted automatically after the window. The
+    privacy policy states a background task deletes all files older than one
+    hour and that source text is not logged.
+maturity:
+  founded: 2025
+  operator: Outline Technologies (https://outline.ad)
+  funding: bootstrapped, stated as no venture capital and no investors
+  hosting: Hetzner, Falkenstein DE, behind Cloudflare; origin reports nginx/1.24.0
+    (Ubuntu)
+  upstream: >-
+    The API is a proxy over Microsoft neural TTS. The /developers technical
+    notes name Microsoft Azure Cognitive Services Neural TTS. The live
+    GET /api/voices payload is more specific: each of the 1,410 voice objects
+    carries Microsoft's own Name/ShortName/SuggestedCodec/VoiceTag fields plus
+    a FreeTTS-added "Source":"edge" and "Tier"/"RequiresPro" annotation, which
+    points at the Edge read-aloud voice list rather than a paid Azure Speech
+    resource. Recorded as observed provenance, not as an accusation - building
+    on Microsoft neural voices is the intended use of that service, and FreeTTS
+    discloses the dependency itself on both /developers and /about.
+announced_not_shipped:
+- API webhooks (Creator, marked "soon")
+- background audio mixing (Creator, "soon")
+- viseme / lip-sync data (Creator, "soon")
+- 3 team seats (Creator, "soon")
+- >-
+  audiobook batch export (2,000,000 chars/job) is marked "new" on pricing and
+  described on /developers, but no endpoint or job contract is published
+changelog:
+  site_changelog: false
+  note: >-
+    FreeTTS publishes no dated changelog on its own domain, so no changelog/
+    artifact and no `ChangeLog` pointer are emitted. The only dated release
+    notes it writes are the browser-extension store listings - Chrome, Edge and
+    Firefox all shipped 1.5.3 on 2026-08-24 and the Chrome listing carries a
+    written "NEW IN 1.5.3" note. Those are captured in
+    packages/freetts-packages.yml.

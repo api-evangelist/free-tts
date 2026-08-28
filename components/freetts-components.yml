@@ -1,0 +1,66 @@
+generated: '2026-08-28'
+method: searched
+source: https://freetts.org/developers
+probed: '2026-08-28'
+summary: >-
+  FreeTTS documents exactly one embeddable client-side component - a drop-in
+  read-aloud widget delivered by a single script tag. It is fully specified on
+  the developer page, and the script it names is not served.
+families:
+- name: Embed widget
+  kind: script-tag web component
+  loader: https://freetts.org/widget.js
+  loader_status: 404
+  loader_probe: >-
+    GET https://freetts.org/widget.js returned HTTP 404 with the Next.js
+    catch-all HTML body (67,991 bytes), both plain and with a
+    Referer: https://freetts.org/developers header. There is no versioned or
+    CDN-hosted alternative - cdn.freetts.org also returns 404, though it is
+    allowlisted in the site's own media-src CSP.
+  status: documented-not-served
+  description: >-
+    Documented as "One script tag. No configuration required. Adds a minimal
+    text-to-speech widget to any HTML page... Works on any static site,
+    WordPress, or web app."
+  attributes:
+  - name: data-voice
+    type: string
+    default: en-US-JennyNeural
+    description: default voice for the widget
+  - name: data-theme
+    type: string
+    default: auto
+    values: [light, dark, auto]
+    description: auto follows OS preference
+  - name: data-autoplay
+    type: boolean
+    default: 'false'
+    description: auto-play when the page loads
+  documented_snippet: |
+    <script src="https://freetts.org/widget.js"
+      data-voice="en-US-JennyNeural"
+      data-theme="dark"
+      data-autoplay="false">
+    </script>
+- name: Voice Studio
+  kind: hosted first-party surface
+  url: https://freetts.org/studio
+  status: live
+  embeddable: false
+  note: >-
+    A hosted projects-and-timeline editor (PRO). Not embeddable and not a
+    component library; recorded so the component inventory is not mistaken for
+    the whole client-side surface.
+- name: Browser extensions
+  kind: end-user client
+  note: >-
+    Chrome, Edge and Firefox extensions are the provider's real client-side
+    distribution. They are catalogued in packages/freetts-packages.yml rather
+    than here, because they are applications rather than components a developer
+    embeds.
+findings:
+- >-
+  The single embeddable component FreeTTS documents cannot be used: the loader
+  URL published in a copy-paste snippet on the developer page 404s. This is the
+  cheapest fix in this profile and the most visible failure - anyone following
+  the documentation gets a silent no-op on their page.

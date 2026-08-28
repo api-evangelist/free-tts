@@ -1,13 +1,59 @@
 name: FreeTTS
+aid: freetts
 description: >-
-  Cloud text-to-speech / AI voice service (freetts.org) offering 400+ neural voices across 75+ languages via a REST/JSON
-  API, plus speech-to-text, AI video/voiceover, audiobook generation, and browser extensions. Backend proxies Microsoft
-  Azure Neural TTS.
+  Cloud text-to-speech / AI voice service (freetts.org) offering neural voices across 75+ languages via a small
+  REST/JSON API, plus speech-to-text, AI video and voiceover, audiobook generation, an SRT subtitle surface, and
+  first-party Chrome, Edge and Firefox extensions. Built and operated by Outline Technologies (outline.ad),
+  bootstrapped, founded 2025, hosted on Hetzner in Falkenstein DE behind Cloudflare. The API is a proxy over
+  third-party neural TTS: the live GET /api/voices catalogue probed 2026-08-28 returned 1,410 voices across 152
+  locales sourced from Google (788), Microsoft Edge (318) and Microsoft Azure (304), of which the 318 Edge voices
+  are the free tier. FreeTTS publishes no OpenAPI, no apis.json, no MCP server and no agent card.
 url: https://raw.githubusercontent.com/api-evangelist/free-tts/refs/heads/main/apis.yml
 created: '2026-08-28'
 modified: '2026-08-28'
 specificationVersion: '0.21'
+image: https://freetts.org/images/og-image.webp
 tags:
+- Text-to-Speech
+- Speech Synthesis
+- AI Voice
+- Audio
+- Media
+- Accessibility
+- Speech-to-Text
+- Content Creation
+- Developer Tools
+apis:
+- name: FreeTTS REST API
+  description: 'REST/JSON API for text-to-speech synthesis, audio and SRT subtitle download, and voice listing. Uses x-api-key
+    header auth. Endpoints: POST /api/v1/tts, GET /api/audio/{file_id}, GET /api/srt/{file_id}, GET /api/voices.
+
+
+    Submitted 2026-08-28 from shubham@telenow.ai with a NAME ONLY -- no apis.json, no docs URL, no provider. telenow.ai is
+    a HubSpot page unrelated to freetts.org, and nothing on freetts.org links the two, so this is a third-party submission.
+    freetts.org itself is healthy and serves an llms.txt; no apis.json and no OpenAPI resolve. The gate''s own research notes
+    the backend proxies Microsoft Azure Neural TTS -- recorded as provenance, not as a policy problem: building a product
+    on Azure TTS is that service''s intended use, unlike the model relays refused this week, which documented redirecting
+    first-party CLI clients. Verified 2026-08-28.
+
+    ENRICHMENT PASS 2026-08-28: contract discovery ran against the API host root, the docs host and every
+    well-known path and found no machine-readable contract. /openapi.json, /swagger.json, /openapi.yaml,
+    /api-docs, /docs and /redoc all return the Next.js catch-all 404; /api/openapi.json, /api/v1/openapi.json,
+    /api/docs, /api/redoc and /api/schema all return the API application''s own JSON 404 {"detail":"Not Found"},
+    so the FastAPI-style app that serves this API has its interactive docs and schema routes disabled. No
+    GraphQL, no MCP endpoint, no agent card, no WSDL, no .proto. The endpoint set is larger than first
+    recorded: POST /api/v1/tts, POST /api/tts-pro (expressive styles, named only in llms.txt, existence
+    confirmed by a live 405 on GET), GET /api/audio/{file_id}, GET /api/srt/{file_id}, GET /api/voices and an
+    undocumented GET /api/health returning 200 {"status":"ok","timestamp":<epoch>}. GET /api/voices is fully
+    open - it returned 585,024 bytes and 1,410 voice objects with no credential. The /developers hero markets
+    the API as "No Key Required" while the same page''s FAQ, all four code samples and the live 401
+    ({"detail":"Missing x-api-key header"}) require an x-api-key header. Free-tier limits are published at
+    three different values (10, 15 and 20 requests/minute) and the per-request character cap at two (1,000 and
+    5,000) across two of the provider''s own pages, and no rate-limit response headers are emitted at all.
+    The documented embed widget loader https://freetts.org/widget.js returns 404.'
+  humanURL: https://freetts.org/developers
+  baseURL: https://freetts.org/api
+  tags:
   - Text-to-Speech
   - Speech Synthesis
   - AI Voice
@@ -17,31 +63,67 @@ tags:
   - Speech-to-Text
   - Content Creation
   - Developer Tools
-apis:
-  - name: FreeTTS REST API
-    description: >-
-      REST/JSON API for text-to-speech synthesis, audio and SRT subtitle download, and voice listing. Uses x-api-key
-      header auth. Endpoints: POST /api/v1/tts, GET /api/audio/{file_id}, GET /api/srt/{file_id}, GET /api/voices.
-    humanURL: https://freetts.org/developers
-    baseURL: https://freetts.org/api
-    tags:
-      - Text-to-Speech
-      - Speech Synthesis
-      - AI Voice
-      - Audio
-      - Media
-      - Accessibility
-      - Speech-to-Text
-      - Content Creation
-      - Developer Tools
-    properties:
-      - type: Documentation
-        url: https://freetts.org/developers
+  properties:
+  - type: Documentation
+    url: https://freetts.org/developers
+  - type: APIReference
+    url: https://freetts.org/developers#endpoints
+  - type: GettingStarted
+    url: https://freetts.org/developers#quickstart
+  - type: LLMsTxt
+    url: https://freetts.org/llms.txt
+  - type: Authentication
+    url: authentication/freetts-authentication.yml
+  - type: ErrorCatalog
+    url: errors/freetts-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/freetts-rate-limits.yml
+  - type: Conventions
+    url: conventions/freetts-conventions.yml
+  - type: DataModel
+    url: data-model/freetts-data-model.yml
+  - type: JSONSchema
+    url: json-schema/freetts-voice.json
 maintainers:
-  - FN: FreeTTS
-    url: https://freetts.org
+- FN: FreeTTS
+  url: https://freetts.org
+  email: info@freetts.org
 generated:
   by: apis.io/add
   model: claude-opus-4-8
   confidence: 85
   at: '2026-08-28T07:30:05.533Z'
+common:
+- type: DomainSecurity
+  url: security/freetts-domain-security.yml
+- type: DeveloperPortal
+  url: https://freetts.org/developers
+- type: Pricing
+  url: https://freetts.org/pricing
+- type: SignUp
+  url: https://freetts.org/login
+- type: TermsOfService
+  url: https://freetts.org/terms
+- type: PrivacyPolicy
+  url: https://freetts.org/privacy
+- type: Support
+  url: https://freetts.org/contact
+- type: Blog
+  url: https://freetts.org/blog
+- type: LLMsTxt
+  url: llms/freetts-llms.txt
+- type: Packages
+  url: packages/freetts-packages.yml
+- type: Plans
+  url: plans/freetts-plans-pricing.yml
+- type: Lifecycle
+  url: lifecycle/freetts-lifecycle.yml
+- type: Conformance
+  url: conformance/freetts-conformance.yml
+- type: Components
+  url: components/freetts-components.yml
+x-enrichment:
+  date: '2026-08-28'
+  status: enriched
+  artifacts_added: 15
+  pass: local-v1

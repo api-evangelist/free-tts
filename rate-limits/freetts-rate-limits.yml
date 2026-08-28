@@ -1,0 +1,93 @@
+generated: '2026-08-28'
+method: searched
+source: https://freetts.org/developers
+also_read:
+- https://freetts.org/pricing
+- https://freetts.org/llms.txt
+probed: '2026-08-28'
+limit_count: 5
+exhaustion_status: 429
+exhaustion_body: 'Too many requests. Please wait a minute.'
+reset_behavior: fixed 60-second window; documented as resetting per IP, per minute
+response_headers:
+  observed: []
+  note: >-
+    PROBED, NOT ASSUMED. A live unauthenticated GET of
+    https://freetts.org/api/voices on 2026-08-28 returned HTTP 200 with no
+    RateLimit-*, no X-RateLimit-*, and no Retry-After header. The full response
+    header set was date, content-type, content-length, server (cloudflare),
+    x-frame-options, x-content-type-options, referrer-policy,
+    strict-transport-security, permissions-policy, cf-cache-status, report-to,
+    nel, cf-ray, alt-svc. An agent calling this API has no runtime budget signal
+    at all - it can only discover the limit by being refused with a 429, and the
+    429 body is prose rather than a structured retry hint.
+  documented: []
+limits:
+- scope: per-IP (unauthenticated / documented on the API reference header block)
+  window: 1 minute
+  limit: 20
+  source: https://freetts.org/developers
+  note: >-
+    The "Rate Limits" section of the developer page states "20 Requests per
+    minute per IP".
+- scope: per-API-key (free plan)
+  window: 1 minute
+  limit: 10
+  source: https://freetts.org/developers
+  note: >-
+    The /developers FAQ ("Do I need an API key?" and "What happens when I hit
+    the rate limit?") both state 10 requests per minute for a free API key. This
+    contradicts the 20/min figure in the same page's header block, and the
+    pricing page's feature matrix states a third figure, 15 req/min, for API
+    access on the Free plan. All three are published by FreeTTS.
+- scope: per-account (web tool, free plan)
+  window: 1 minute
+  limit: 15
+  source: https://freetts.org/pricing
+- scope: per-API-key (PRO)
+  window: 1 minute
+  limit: 200
+  source: https://freetts.org/pricing
+- scope: per-API-key (Creator)
+  window: 1 minute
+  limit: 1000
+  source: https://freetts.org/pricing
+quota_limits:
+- scope: characters per request
+  free: 1000
+  pro: 10000
+  creator: 25000
+  source: https://freetts.org/developers (POST /tts parameter table) and llms.txt
+  note: >-
+    Contradicted by the same page's FAQ and by the pricing page, both of which
+    say 5,000 characters per request on the free tier. The Chrome extension
+    1.5.3 release notes describe fixing exactly this 1,000-vs-5,000 gap in the
+    extension, which suggests 5,000 is the current server behaviour and the
+    1,000 in the reference table is stale.
+- scope: characters per month
+  free: 15000
+  pro: 1000000
+  creator: 5000000
+  source: https://freetts.org/pricing
+  note: >-
+    The /developers FAQ states 5,000 chars/month for a free API key, against
+    15,000 on the pricing page. Unresolved.
+usage_signal:
+  documented: true
+  fields:
+  - chars_used
+  - chars_limit
+  source: >-
+    /developers FAQ "What is the monthly character allowance?" states every
+    generate call returns chars_used and chars_limit in the response body. Not
+    verifiable here - POST /api/v1/tts requires a key and returns 401
+    {"detail":"Missing x-api-key header"} without one.
+findings:
+- >-
+  The published rate limit for the free tier takes three different values
+  (10/min, 15/min, 20/min) across two pages of the provider's own
+  documentation, and the per-request character cap takes two (1,000 and 5,000).
+  An integrator cannot size a retry policy from these docs.
+- >-
+  No rate-limit response headers are emitted, so the numbers above are the only
+  signal available and none of them can be confirmed at runtime.

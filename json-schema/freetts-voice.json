@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/free-tts/main/json-schema/freetts-voice.json",
+  "title": "FreeTTS Voice",
+  "description": "A single voice object as returned by GET https://freetts.org/api/voices. DERIVED, not published by FreeTTS: this schema was inferred by API Evangelist from the live 585,024-byte response probed on 2026-08-28, which contained 1,410 voice objects. Required/optional was decided by presence count across all 1,410 objects; enums list every value actually observed. FreeTTS publishes no OpenAPI and no schema of its own.",
+  "x-derivation": {
+    "generated": "2026-08-28",
+    "method": "derived",
+    "source": "probed https://freetts.org/api/voices (HTTP 200, 1410 objects)",
+    "sample_size": 1410
+  },
+  "type": "object",
+  "required": ["ShortName", "Gender", "Locale", "FriendlyName", "Status", "Source", "Tier", "RequiresPro", "VoiceTag"],
+  "additionalProperties": true,
+  "properties": {
+    "ShortName": {
+      "type": "string",
+      "description": "The value to pass as the `voice` parameter on POST /api/v1/tts. Microsoft-sourced voices follow locale-NameNeural (en-US-JennyNeural); Google-sourced voices follow locale-Chirp3-HD-Name (en-US-Chirp3-HD-Aoede), so the locale-NameNeural format the developer docs describe holds for only part of the catalogue.",
+      "examples": ["en-US-JennyNeural", "af-ZA-AdriNeural", "en-US-Chirp3-HD-Aoede"]
+    },
+    "Name": {
+      "type": "string",
+      "description": "Fully qualified upstream voice name. Present on 1,106 of 1,410 objects; absent on some Azure-sourced entries.",
+      "examples": ["Microsoft Server Speech Text to Speech Voice (af-ZA, AdriNeural)"]
+    },
+    "FriendlyName": {
+      "type": "string",
+      "description": "Display name. For Google-sourced voices this is a FreeTTS rebrand rather than the upstream name (ShortName en-US-Chirp3-HD-Aoede is presented as 'Nova')."
+    },
+    "Gender": {"type": "string", "enum": ["Female", "Male", "Neutral"]},
+    "Locale": {"type": "string", "description": "BCP 47 language tag. 152 distinct locales across 82 language subtags were observed.", "examples": ["en-US", "af-ZA", "zh-CN"]},
+    "LocaleName": {"type": "string", "description": "Human-readable locale. Present on 622 of 1,410 objects.", "examples": ["Afrikaans (South Africa)"]},
+    "SuggestedCodec": {"type": "string", "description": "Present on 318 of 1,410 objects; the only observed value is audio-24khz-48kbitrate-mono-mp3.", "enum": ["audio-24khz-48kbitrate-mono-mp3"]},
+    "Status": {"type": "string", "enum": ["GA"], "description": "Every one of the 1,410 voices observed was GA. No preview/deprecated lifecycle value appears in the live catalogue."},
+    "Source": {
+      "type": "string",
+      "enum": ["google", "edge", "azure"],
+      "description": "Upstream synthesis vendor. Observed distribution: google 788, edge 318, azure 304. All 318 voices with RequiresPro=false are Source=edge."
+    },
+    "Tier": {"type": "string", "enum": ["signature", "standard", "multilingual", "hd", "hd-flash", "turbo"], "description": "Observed distribution: signature 788, standard 498, multilingual 51, hd 43, hd-flash 24, turbo 6."},
+    "RequiresPro": {"type": "boolean", "description": "True on 1,092 of 1,410 voices. The 318 free voices are exactly the Source=edge set."},
+    "WordsPerMinute": {"type": ["string", "null"], "description": "Present on 304 objects (the Azure-sourced set); frequently null."},
+    "StyleList": {"type": "array", "items": {"type": "string"}, "description": "Expressive style names. Present on 304 objects (Azure-sourced); often empty."},
+    "SecondaryLocaleList": {"type": "array", "items": {"type": "string"}, "description": "Additional locales a multilingual voice speaks. Present on 304 objects."},
+    "VoiceTag": {
+      "type": "object",
+      "description": "Descriptive tags. Key presence across 1,410 objects: VoicePersonalities 1,225, ContentCategories 1,106, ModelSeries 304, PersonaId 304, Source 304, Capabilities 131, TailoredScenarios 122.",
+      "additionalProperties": true,
+      "properties": {
+        "VoicePersonalities": {"type": "array", "items": {"type": "string"}, "examples": [["Friendly", "Positive"]]},
+        "ContentCategories": {"type": "array", "items": {"type": "string"}, "examples": [["General"], ["Conversation"]]},
+        "ModelSeries": {"type": "array", "items": {"type": "string"}},
+        "PersonaId": {"type": "array", "items": {"type": "string"}},
+        "Source": {"type": "array", "items": {"type": "string"}},
+        "Capabilities": {"type": "array", "items": {"type": "string"}},
+        "TailoredScenarios": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

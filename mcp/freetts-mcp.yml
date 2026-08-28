@@ -1,0 +1,93 @@
+generated: '2026-08-28'
+method: derived
+source: >-
+  Candidate tool set derived from the four endpoints documented at
+  https://freetts.org/developers plus the PRO endpoint named in
+  https://freetts.org/llms.txt. No OpenAPI exists, so no operationIds back these
+  tools and no tool-crosswalk artifact is emitted.
+status: candidate
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  verified: probed
+search_evidence:
+- url: https://freetts.org/mcp
+  status: 404
+- url: https://freetts.org/.well-known/agent-card.json
+  status: 404
+- url: https://freetts.org/.well-known/agent.json
+  status: 404
+- url: https://registry.npmjs.org/-/v1/search?text=freetts
+  status: 200
+  result: 0 packages
+- url: https://api.github.com/users/freetts
+  status: 200
+  result: public_repos 0
+note: >-
+  FreeTTS ships NO MCP server - no hosted endpoint, no stdio package, no mention
+  of MCP anywhere on the site or in llms.txt. `mode: none` and no `MCPServer`
+  pointer is written into apis.yml: the tools below are a candidate design by
+  API Evangelist, and advertising them as a server would credit FreeTTS with an
+  agent surface it does not operate. The endpoint field is deliberately null -
+  no MCP path was guessed.
+why_it_would_be_cheap: >-
+  This is an unusually good MCP candidate. The whole API is five endpoints with
+  flat scalar parameters, one of them (voices) is already free and
+  unauthenticated, and the product's natural consumer - an agent that needs to
+  turn a string into audio - is exactly the MCP caller shape. The blocking gaps
+  are elsewhere in this profile: no machine-readable contract to generate from,
+  no idempotency on a metered write, and no structured error codes.
+candidate_tools:
+- name: list_voices
+  description: >-
+    List available synthesis voices, each with ShortName, locale, gender, tier
+    and whether it requires a paid plan.
+  backing: GET /api/voices
+  auth_required: false
+  input_schema_note: >-
+    No parameters. The live endpoint returns all 1,410 voices unfiltered, so a
+    real implementation would need to add locale/tier/free-only filtering
+    client-side - see the pagination finding in conventions/.
+  confidence: high
+- name: synthesize_speech
+  description: >-
+    Convert text (or a complete SSML document) to audio and return a file_id
+    addressing the generated MP3 and SRT.
+  backing: POST /api/v1/tts
+  auth_required: true
+  input_schema_note: >-
+    text (required), voice, rate, pitch, output_format - types and ranges taken
+    from the published parameter table, not from a spec.
+  confidence: high
+  consequence: >-
+    Metered write. Consumes the account's monthly character quota and is NOT
+    idempotent - a retry synthesises and bills again.
+- name: synthesize_speech_expressive
+  description: Synthesize with an expressive style and intensity (PRO/Creator).
+  backing: POST /api/tts-pro
+  auth_required: true
+  confidence: medium
+  note: >-
+    Endpoint existence confirmed by a live 405 Method Not Allowed on GET, but
+    its request body is documented only as a three-line example in llms.txt and
+    appears nowhere on /developers.
+- name: download_audio
+  description: Retrieve the generated audio file for a file_id.
+  backing: GET /api/audio/{file_id}
+  auth_required: false
+  confidence: high
+  note: expires 1h (free) / 30d (PRO) / 90d (Creator)
+- name: download_subtitles
+  description: Retrieve the word-level SubRip subtitle file for a file_id.
+  backing: GET /api/srt/{file_id}
+  auth_required: false
+  confidence: high
+- name: health
+  description: Service health check.
+  backing: GET /api/health
+  auth_required: false
+  confidence: high
+  note: probed live, returns {"status":"ok","timestamp":<epoch>}; undocumented

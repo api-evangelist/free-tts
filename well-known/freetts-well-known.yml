@@ -1,0 +1,53 @@
+generated: '2026-08-28'
+method: probed
+source: live GET probes of https://freetts.org/.well-known/* on 2026-08-28
+note: >-
+  Every well-known path probed returned HTTP 404 from the Next.js catch-all page
+  (67,991 bytes of HTML, not a document). Nothing is served. No WellKnown or
+  SecurityTxt pointer is emitted in apis.yml, because the probe records an
+  absence, not a presence. /security.txt (the non-well-known legacy location)
+  was also probed and 404s.
+hosts:
+- host: freetts.org
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+additional_probes:
+- url: https://freetts.org/security.txt
+  status: 404
+  note: legacy security.txt location, also absent
+- url: https://freetts.org/robots.txt
+  status: 200
+  note: >-
+    Served and substantive (4,737 bytes). Explicitly allows GPTBot, ChatGPT-User,
+    OAI-SearchBot, ClaudeBot, anthropic-ai, Claude-Web, Claude-User,
+    Claude-SearchBot, PerplexityBot, Perplexity-User and Google-Extended, each
+    with `Disallow: /download/`. It also carries `Disallow: /api/` and an
+    inline comment documenting that Googlebot fired a real Stripe activation on
+    /payment-success on 2026-08-27. This is an AI-crawler policy, not a
+    well-known document, so it earns no pointer.
+- url: https://freetts.org/sitemap.xml
+  status: 200
+  note: 116 URLs

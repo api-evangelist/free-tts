@@ -1,0 +1,102 @@
+generated: '2026-08-28'
+method: searched
+source: https://freetts.org/pricing
+also_read:
+- https://freetts.org/developers
+- https://freetts.org/llms.txt
+- https://freetts.org/about
+currency: USD
+plan_count: 3
+billing_model: >-
+  Flat monthly character quota per plan. No credits, no per-action billing, no
+  overage charges - the pricing page states explicitly that revisions and failed
+  renders do not consume extra quota and that exceeding the monthly allowance
+  drops the account back to free-tier behaviour until the cycle resets.
+plans:
+- name: Free
+  price: 0
+  currency: USD
+  period: month
+  quota:
+    chars_per_generation: 5000
+    chars_per_day: 5000
+    chars_per_month: 15000
+  api_access: true
+  api_keys: 1
+  api_rate_limit: 10 requests/minute (free API key)
+  web_rate_limit: 15 requests/minute (web tool)
+  overage: none - drops to free-tier behaviour, no charge
+  limits:
+  - MP3 download only, with a spoken "Generated with FreeTTS.org" tag
+  - personal, non-commercial use only
+  - free account required after 3 guest generations, no credit card
+  - generated files retained 1 hour
+  note: >-
+    The monthly figure is contradicted by the provider's own /developers FAQ,
+    which says a free API key includes 5,000 characters per month rather than
+    15,000. Both numbers are published by FreeTTS; neither is inferred here.
+- name: PRO
+  price: 19
+  currency: USD
+  period: month
+  alt_prices:
+  - price: 149
+    period: year
+    note: stated as 35% saving
+  - price: 199
+    period: lifetime
+    note: >-
+      Founding 100 one-time purchase, advertised as limited to the first 100
+      accounts. Monthly character caps still apply.
+  trial: 3-day full-PRO trial, card on file, cancel inside 3 days to pay nothing
+  refund: 7-day money-back guarantee on all paid plans
+  quota:
+    chars_per_generation: 10000
+    chars_per_month: 1000000
+  api_access: true
+  api_keys: up to 10
+  api_rate_limit: 200 requests/minute
+  includes:
+  - commercial license
+  - no watermark
+  - 95 expressive voice styles with intensity control
+  - 30 HD neural voices
+  - WAV and OGG export
+  - SSML support and a dedicated SSML endpoint with validation
+  - multi-voice per file (2 voices)
+  - custom pronunciation dictionary
+  - 30-day generation history / file retention
+  - email support, 24h
+- name: Creator
+  price: 39
+  currency: USD
+  period: month
+  alt_prices:
+  - price: 349
+    period: lifetime
+    note: '"Founding 100" one-time purchase'
+  quota:
+    chars_per_generation: 25000
+    chars_per_month: 5000000
+  api_access: true
+  api_rate_limit: 1000 requests/minute
+  includes:
+  - everything in PRO
+  - multi-talker dialogue, unlimited voices per file
+  - OPUS export
+  - 90-day generation history
+  - priority support, 4h
+  - audiobook batch export, 2,000,000 chars per job
+  announced_not_shipped:
+  - background audio mixing
+  - viseme / lip-sync data
+  - 3 team seats
+  - API webhooks
+  note: >-
+    The four items above are marked "soon" on the pricing page. API webhooks in
+    particular are the reason no AsyncAPI or Webhooks artifact is emitted for
+    this provider - the event surface is announced, not shipped.
+enterprise: >-
+  No enterprise tier and no "contact sales" plan. The contact page invites
+  business inquiries about API integration and custom voice solutions, but no
+  enterprise pricing is published.

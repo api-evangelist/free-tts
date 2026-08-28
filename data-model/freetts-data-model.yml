@@ -1,0 +1,154 @@
+generated: '2026-08-28'
+method: derived
+source: >-
+  https://freetts.org/developers (endpoint and parameter tables, response
+  samples) plus a live probe of GET https://freetts.org/api/voices on
+  2026-08-28. No OpenAPI exists for this provider, so the graph is derived from
+  documentation and observed payloads rather than from $ref links.
+cross_links:
+- json-schema/freetts-voice.json
+- conventions/freetts-conventions.yml
+entities:
+- name: Voice
+  description: >-
+    A synthesis voice. Addressed by ShortName, which is the value passed as the
+    `voice` parameter on a synthesis request. Read-only; there is no create,
+    update or delete surface.
+  identifier:
+    field: ShortName
+    type: string
+    format: locale-NameNeural (Microsoft-sourced) or locale-Chirp3-HD-Name (Google-sourced)
+  schema: json-schema/freetts-voice.json
+  operations:
+  - GET /api/voices
+  observed_population: 1410
+  note: >-
+    The public marketing figure is "400+ voices across 75+ languages". The live
+    catalogue is 1,410 voice objects across 152 locales and 82 language
+    subtags, of which 318 are usable on the free tier. The marketing number is
+    conservative, not inflated.
+- name: Synthesis
+  description: >-
+    A single text-to-speech job. Created by POST /api/v1/tts (or POST
+    /api/tts-pro for expressive styles), which returns a file_id. It is not
+    itself retrievable - there is no GET for the job, only for the two artifacts
+    it produces.
+  identifier:
+    field: file_id
+    type: string
+    format: uuid
+    note: >-
+      Documented example a3f7c012-58b4-4e2a-9d1c-0f83abc12345. The file_id is
+      both the artifact address and its only access control - the download
+      endpoints are unauthenticated.
+  request_fields:
+  - name: text
+    type: string
+    required: true
+    note: >-
+      Also accepts a complete SSML document in this same field, in which case it
+      is passed through rather than treated as plain text. Character cap is
+      published inconsistently as 1,000 and 5,000 for the free tier.
+  - name: voice
+    type: string
+    required: false
+    default: en-US-JennyNeural
+    references: Voice.ShortName
+  - name: rate
+    type: string
+    required: false
+    default: +0%
+    range: -50% to +100%
+  - name: pitch
+    type: string
+    required: false
+    default: +0Hz
+    range: -20Hz to +20Hz
+  - name: output_format
+    type: string
+    required: false
+    default: mp3
+    values: [mp3, mp3-hd, wav, ogg, opus]
+  - name: style
+    type: string
+    required: false
+    note: PRO/Creator only, on POST /api/tts-pro; 95 documented styles
+  - name: style_degree
+    type: number
+    required: false
+    range: 0.01 to 2.0
+    note: PRO/Creator only
+  response_fields:
+  - name: file_id
+    type: string
+  - name: chars_used
+    type: integer
+    note: documented in the FAQ as returned on every generate call; unverified
+      (endpoint requires a key)
+  - name: chars_limit
+    type: integer
+    note: as above
+  operations:
+  - POST /api/v1/tts
+  - POST /api/tts-pro
+- name: AudioFile
+  description: The generated MP3/WAV/OGG artifact.
+  identifier:
+    field: file_id
+    type: uuid
+  operations:
+  - GET /api/audio/{file_id}
+  media_type: audio/mpeg (mp3), with Content-Disposition attachment
+  retention: 1 hour (free), 30 days (PRO), 90 days (Creator)
+- name: SubtitleFile
+  description: >-
+    The SubRip (.srt) document generated alongside every synthesis, with
+    word-level cues converted from upstream viseme data.
+  identifier:
+    field: file_id
+    type: uuid
+  operations:
+  - GET /api/srt/{file_id}
+  media_type: text/plain (SubRip)
+  retention: same window as the audio file
+relationships:
+- from: Synthesis
+  to: Voice
+  type: belongs_to
+  via: voice -> Voice.ShortName
+  confidence: high
+- from: Synthesis
+  to: AudioFile
+  type: has_one
+  via: file_id
+  confidence: high
+- from: Synthesis
+  to: SubtitleFile
+  type: has_one
+  via: file_id
+  confidence: high
+  note: >-
+    The docs state every /api/v1/tts call generates both an MP3 and an SRT, so
+    the SRT is not opt-in and shares the audio's identifier and expiry.
+- from: AudioFile
+  to: SubtitleFile
+  type: has_one
+  via: file_id (shared identifier, not a foreign key)
+  confidence: high
+id_prefixes: []
+id_note: >-
+  FreeTTS uses bare UUIDs with no type prefix, so an identifier carries no
+  information about what it addresses - the same file_id is passed to both
+  /api/audio and /api/srt and the two 404s ("Audio not found" / "SRT not found")
+  are the only way to tell them apart.
+upstream_provenance:
+  note: >-
+    The Voice entity is an aggregation over three upstream vendors, which the
+    live payload exposes and the developer documentation does not. Source
+    counts on 2026-08-28: google 788, edge 318, azure 304. The /developers
+    technical notes describe the backend as "Microsoft Azure Cognitive Services
+    Neural TTS" only. Google-sourced voices are Chirp3-HD models presented
+    under FreeTTS display names (ShortName en-US-Chirp3-HD-Aoede,
+    FriendlyName "Nova"). Recorded as observed data-model provenance; the mix
+    is visible in the public API response and is stated here without
+    inference about the commercial arrangement behind it.

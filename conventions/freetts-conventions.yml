@@ -1,0 +1,146 @@
+generated: '2026-08-28'
+method: searched
+source: https://freetts.org/developers
+also_read:
+- https://freetts.org/llms.txt
+- https://freetts.org/pricing
+probed: '2026-08-28'
+cross_links:
+- authentication/freetts-authentication.yml
+- errors/freetts-problem-types.yml
+- rate-limits/freetts-rate-limits.yml
+- lifecycle/freetts-lifecycle.yml
+auth:
+  style: api-key header
+  header: x-api-key
+  see: authentication/freetts-authentication.yml
+versioning:
+  style: URI path
+  current: v1
+  base: https://freetts.org/api
+  note: >-
+    Only the synthesis endpoint is versioned - POST /api/v1/tts. The audio, SRT
+    and voices endpoints sit at /api/audio, /api/srt and /api/voices with no
+    version segment, and the PRO endpoint is /api/tts-pro, also unversioned.
+    Four of five documented endpoints are therefore outside the version
+    contract.
+idempotency:
+  supported: false
+  header: null
+  scope: null
+  retention: null
+  evidence: >-
+    No Idempotency-Key header, no request-id echo, and no de-duplication
+    behaviour is documented anywhere on /developers, in llms.txt, or on the
+    pricing page. A retried POST /api/v1/tts produces a second synthesis and
+    consumes the character quota again. No `Idempotency` pointer is emitted in
+    apis.yml, because the provider does not support it.
+  cost_of_absence: >-
+    Every write on this API is metered against a monthly character budget, so a
+    duplicate call is not merely wasteful, it is billable. This is the highest
+    value single change available to FreeTTS on the agent-readiness rubric.
+pagination:
+  supported: false
+  note: >-
+    GET /api/voices returns the complete catalogue in one response - a probed
+    585,024-byte JSON array of 1,410 objects, unpaginated and uncompressed at
+    the application layer. There is no limit, offset, cursor, or page parameter
+    documented, and no filter by locale or tier, so a client that wants the six
+    German voices must download all 1,410. For a payload this size that is a
+    real cost on constrained clients and the obvious place a `locale` query
+    parameter would pay for itself.
+field_expansion:
+  supported: false
+sparse_fieldsets:
+  supported: false
+metadata:
+  supported: false
+  note: no user-supplied metadata field on the synthesis request
+request_id_tracing:
+  supported: false
+  note: >-
+    No X-Request-Id / X-Correlation-Id is emitted on any probed response. The
+    only per-request identifier a caller receives is the response `file_id`
+    UUID, which identifies the artifact, not the request, and is only returned
+    on success. There is also a cf-ray header from Cloudflare, but that is edge
+    infrastructure, not a provider-supported trace id.
+error_envelope:
+  shape: '{"detail": "<string>"}'
+  rfc9457: false
+  see: errors/freetts-problem-types.yml
+rate_limit_signaling:
+  headers: none
+  status: 429
+  retry_after: false
+  see: rate-limits/freetts-rate-limits.yml
+content_negotiation:
+  request: application/json
+  responses:
+  - application/json (POST /api/v1/tts, GET /api/voices, GET /api/health)
+  - audio/mpeg with Content-Disposition attachment (GET /api/audio/{file_id})
+  - text/plain SRT (GET /api/srt/{file_id})
+  output_format_parameter:
+    name: output_format
+    values: [mp3, mp3-hd, wav, ogg, opus]
+    default: mp3
+    note: >-
+      mp3 is 24kHz, mp3-hd 48kHz, wav 48kHz 16-bit PCM, ogg is an Ogg container
+      with the Opus codec at 48kHz. wav/ogg are PRO, opus is Creator-only. Every
+      format is mono single-channel by design, which the docs are unusually
+      explicit about - there is no channels parameter and no downmix step.
+cors:
+  enabled: false
+  guidance: docs direct browser callers to proxy through their own backend
+async_jobs:
+  supported: partial
+  note: >-
+    The synthesis call is synchronous and returns a file_id. A separate
+    audiobook batch surface (up to 2,000,000 chars per job, returning a ZIP of
+    chapter audio plus word/sentence timing JSON, described as built on Azure
+    Batch Synthesis) is advertised on /developers and /text-to-audiobook as a
+    Creator feature, but no endpoint, no job-status contract and no callback are
+    published for it.
+reversibility:
+  applicable: true
+  grade: none
+  write_surfaces:
+  - operation: POST /api/v1/tts
+    creates: an MP3 plus an SRT, addressed by file_id
+    reversal_operation: null
+    window: null
+    note: >-
+      There is no delete, cancel, revoke or void operation published for a
+      generated file. What exists instead is unconditional auto-expiry: the
+      docs state free-tier files are deleted automatically about one hour after
+      generation, PRO files after 30 days, Creator after 90. That is a stated
+      window, but it is a retention policy, not a reversal the caller can
+      invoke - a caller who synthesises the wrong text cannot withdraw the
+      artifact, only wait for it to lapse.
+  - operation: POST /api/tts-pro
+    creates: same, with expressive style applied
+    reversal_operation: null
+    window: null
+  quota_reversal:
+    documented: true
+    note: >-
+      The pricing page states failed renders are refunded to the quota
+      automatically and that re-doing a line costs the same as the first take.
+      This is an automatic correction, not a caller-invoked reversal, and no
+      endpoint exposes it.
+  subscription_reversal:
+    documented: true
+    window: 7-day money-back guarantee on all paid plans; 3-day PRO trial
+      cancellable with no charge
+    source: https://freetts.org/pricing and https://freetts.org/refund
+    note: commercial reversal, not an API operation
+  verdict: >-
+    Graded `none` rather than `documented`: reversibility asks whether an agent
+    can take back an action it has taken, and on this API it cannot. Recording
+    the retention window as if it were a reversal window would overstate the
+    posture.
+dry_run_mode:
+  supported: false
+  note: >-
+    No preview, validate-only or estimate mode. An agent cannot find out what a
+    request will cost against the character quota without spending it. GET
+    /api/voices is the only free reconnaissance call.

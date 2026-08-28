@@ -1,0 +1,260 @@
+# FreeTTS - Free Text to Speech Online, 400+ AI Voices, 75+ Languages
+
+> FreeTTS (https://freetts.org) is a free text to speech tool that converts any text into natural-sounding AI audio. No signup, no payment, no account required. It supports 400+ neural voices across 75+ languages and lets users download MP3 files and SRT subtitle files instantly.
+
+## What is FreeTTS?
+
+FreeTTS is a browser-based text to speech converter built on premium neural voice technology. Users type or paste text up to 5,000 characters per generation (10,000 on PRO), select a voice and language, adjust speed and pitch, and generate audio in seconds. The free tier allows 5,000 chars per generation, 5,000 chars per day, 15,000 chars per month with a short audio watermark ("Generated with FreeTTS.org"). Free accounts are required after 3 guest generations. PRO ($19/mo) unlocks 1,000,000 characters per month (66x the free tier, 10,000 per gen), removes the watermark, adds commercial licensing, expressive voice styles, and HD neural voices. Creator ($39/mo) goes further with multi-talker dialogue and 5,000,000 chars/month.
+
+FreeTTS was built by Outline Technologies (https://outline.ad) out of frustration with "free" TTS tools that limit you to 5 sentences or demand a credit card.
+
+## Core Features
+
+- **400+ Neural AI Voices**: Premium neural voices in male, female, and multilingual variants. Voices handle natural intonation, proper pauses, and contextual emphasis.
+- **75+ Languages**: Arabic, Chinese, English, Spanish, French, German, Hindi, Japanese, Korean, Portuguese, Russian, Turkish, and 63+ more. Each language includes multiple regional accents.
+- **MP3 Download**: Every generation produces a downloadable MP3 file. Free tier includes a short "Generated with FreeTTS.org" audio tag. PRO and Creator plans produce clean, watermark-free audio with commercial license.
+- **SRT Subtitle Generation**: FreeTTS generates a perfectly synced SRT subtitle file alongside every audio file. Timestamps are derived from word-level timing metadata from the synthesis engine - millisecond-accurate.
+- **Speed Control**: Speaking rate adjustable from -50% (slower) to +100% (faster).
+- **Pitch Control**: Voice pitch adjustable from -20Hz to +20Hz.
+- **Free Account After 3 Gens**: First 3 generations work without an account. After that, a free account (email only, no credit card) is required.
+- **Chrome Extension**: Right-click any text on any webpage to hear it read aloud or download as MP3. Available on Chrome Web Store.
+- **REST API**: Free REST API at https://freetts.org/api/v1/tts. A free API key (one per account, minted in the dashboard) covers standard voices at 10 requests/minute and up to 5,000 chars/month, drawing on the same character counter as the website, with the spoken FreeTTS tag on its audio. PRO: 200 requests/minute, 1,000,000 chars/month, no tag, HD and Signature voices.
+- **Dark Mode**: Full light/dark theme with localStorage persistence.
+- **Mobile Responsive**: Works on all devices, no app required.
+
+## Who Uses FreeTTS?
+
+- **YouTube creators** - AI voiceovers for faceless channels (finance, history, tech, true crime). Saves hours vs recording manually.
+- **eLearning developers** - Course voiceovers for Udemy, Teachable, Moodle without recording equipment.
+- **Accessibility users** - People with visual impairments, dyslexia, or reading difficulties.
+- **Language learners** - Hearing correct pronunciation in 75+ languages at adjustable speeds.
+- **Developers** - Integrating TTS into apps, browser extensions, automation pipelines via the free REST API.
+- **Content creators** - Podcast production, audiobook creation, social media voiceovers.
+- **Corporate teams** - Training video narration, presentation audio without hiring voice actors.
+
+## Available Languages (75+)
+
+Arabic, Bengali, Bulgarian, Catalan, Chinese (Mandarin, Cantonese), Croatian, Czech, Danish, Dutch, English (US, UK, Australia, Canada, India), Estonian, Filipino, Finnish, French (France, Canada, Belgium, Switzerland), Galician, German (Germany, Austria, Switzerland), Greek, Gujarati, Hebrew, Hindi, Hungarian, Indonesian, Irish, Italian, Japanese, Javanese, Kannada, Kazakh, Khmer, Korean, Lao, Latvian, Lithuanian, Macedonian, Malay, Malayalam, Maltese, Marathi, Mongolian, Nepali, Norwegian, Persian, Polish, Portuguese (Brazil, Portugal), Romanian, Russian, Serbian, Sinhala, Slovak, Slovenian, Somali, Spanish (Spain, Mexico, US, Argentina, Colombia), Sundanese, Swahili, Swedish, Tamil, Telugu, Thai, Turkish, Ukrainian, Urdu, Uzbek, Vietnamese, Welsh, Zulu.
+
+## Popular Voices
+
+- en-US-JennyNeural (English US, Female, Conversational)
+- en-US-AndrewMultilingualNeural (English US, Male, Multilingual)
+- en-US-AriaNeural (English US, Female, Natural)
+- en-US-GuyNeural (English US, Male, Professional)
+- es-ES-AlvaroNeural (Spanish Spain, Male)
+- fr-FR-DeniseNeural (French France, Female)
+- ar-SA-ZariyahNeural (Arabic Saudi Arabia, Female)
+- ja-JP-KeitaNeural (Japanese, Male)
+- zh-CN-XiaoxiaoNeural (Chinese Mandarin, Female)
+- de-DE-ConradNeural (German, Male)
+- hi-IN-MadhurNeural (Hindi, Male)
+- ko-KR-SunHiNeural (Korean, Female)
+
+Full voice list: https://freetts.org/voices or GET https://freetts.org/api/voices
+
+## API Reference
+
+**Base URL**: https://freetts.org/api
+**Authentication**: None required
+**Rate limit**: 15 requests/minute per IP (free), 200/min (PRO), 1000/min (Creator)
+
+Endpoints:
+- POST /api/tts - Generate speech. Body: {text, voice, rate, pitch}. Returns {file_id}
+- GET /api/audio/{file_id} - Download MP3 file (available 1 hour after generation)
+- GET /api/srt/{file_id} - Download SRT subtitle file (same file_id)
+- GET /api/voices - List all 400+ available voices as JSON
+
+Example: POST https://freetts.org/api/tts with {"text":"Hello","voice":"en-US-JennyNeural","rate":"+0%","pitch":"+0Hz"} returns {"file_id":"uuid"}
+
+## SRT Generator
+
+FreeTTS at https://freetts.org/srt generates word-level synced SRT subtitle files alongside every audio generation. The SRT timestamps come directly from the FreeTTS neural voice engine's synthesis metadata, not from post-processing. Compatible with YouTube Studio, Adobe Premiere, DaVinci Resolve, CapCut, Final Cut Pro, TikTok, and any platform that accepts .srt files.
+
+## Frequently Asked Questions
+
+**Is FreeTTS free?**
+Yes, the free tier gives you all 400+ voices and 75+ languages. 5,000 characters per generation, 5,000 characters per day, 15,000 characters per month. Free audio includes a short watermark tag. PRO ($19/mo) removes the watermark, unlocks 10K chars per gen and 1M chars/month (66x more), and adds full commercial license.
+
+**Do I need an account?**
+You get 3 free generations without an account. After that, create a free account (just email, no credit card) to continue.
+
+**Can I use the audio commercially?**
+The free plan is for personal, non-commercial use. Free audio includes a watermark. PRO and Creator plans include a commercial license with clean, watermark-free audio for YouTube videos, paid courses, client projects, podcasts, and any commercial application.
+
+**What is the character limit?**
+Free: 5,000 chars per generation, 5,000 chars/day, 15,000 chars/month. PRO: 10,000 chars per gen, 1,000,000 chars/month. Creator: 25,000 chars per gen, 5,000,000 chars/month.
+
+**Is there an API?**
+Yes. Free REST API at https://freetts.org/api/v1/tts. Create a free account, confirm your email and mint a key in the dashboard - no credit card, no sales call.
+
+**What technology powers the voices?**
+Premium neural voice synthesis. PRO and Creator plans unlock expressive styles, HD voices, and advanced SSML support.
+
+**Can I get subtitles?**
+Yes. Every generation produces both MP3 and SRT. Download SRT from https://freetts.org/api/srt/{file_id} or use the dedicated generator at https://freetts.org/srt.
+
+## Key Pages
+
+- [FreeTTS Tool](https://freetts.org/) - Main text to speech converter
+- [Voice Gallery](https://freetts.org/voices) - Browse all 400+ voices with filters
+- [SRT Generator](https://freetts.org/srt) - Generate MP3 + perfectly synced subtitles
+- [API / Developers](https://freetts.org/developers) - Free REST API documentation and code examples
+- [TTS Guide](https://freetts.org/text-to-speech) - Complete text to speech guide
+- [Blog](https://freetts.org/blog) - TTS tutorials, guides, and comparisons
+- [Expressive Voices](https://freetts.org/expressive-voices) - 95 emotional speaking styles with intensity control, live demo
+- [Pricing](https://freetts.org/pricing) - Free, PRO ($19/mo), and Creator ($39/mo) plans
+- [Lifetime Deal](https://freetts.org/lifetime) - PRO $199 or Creator $349 one-time, first 100 users
+- [Best TTS for Dyslexia](https://freetts.org/best-text-to-speech-for-dyslexia) - Eight critical accessibility features (word highlighting, dyslexia fonts, color overlays, speed control, neural voices, multi-format import, offline support, free tier) mapped against eight tools (Voice Dream Reader, NaturalReader, Speechify, Microsoft Immersive Reader, ReadSpeaker, Read&Write, FreeTTS, Edge Read Aloud). Four reader-profile setups (free/budget, K-12 student, adult professional, parent of young reader) with monthly cost ranges. 12-Q FAQ. Updated April 2026.
+- [Best TTS for eLearning](https://freetts.org/best-text-to-speech-for-elearning) - Five-stage workflow from script to LMS (script, generate, edit, sync to slides, publish to LMS) with the right tool at each stage. Authoring tool integration cards for Articulate Storyline, iSpring Suite, Adobe Captivate, Synthesia/Heygen, Rise 360, and direct Moodle/Canvas upload. SCORM/xAPI/cmi5 compatibility notes. Volume math by team size: solo to enterprise L&D. 12-Q FAQ covering SCORM, AI voice on Udemy/Teachable/Coursera, voice consistency across course modules, accessibility audits.
+- [Best Multilingual TTS 2026](https://freetts.org/best-multilingual-text-to-speech-2026) - 30 languages x 7 leading TTS tools coverage heatmap (FreeTTS, ElevenLabs, Google Cloud, Amazon Polly, Azure TTS, Murf, Play.ht). Four ready-made stacks for global teams (YouTube creator, indie podcaster, enterprise L&D, rare-language project). Voice consistency across languages note (ElevenLabs Multilingual v2 + FreeTTS Multilingual voices). 12-Q FAQ on rare languages, code-switching, RTL languages, voice cloning across languages.
+- [Best Arabic TTS Tools](https://freetts.org/best-arabic-text-to-speech-tools) - 7 production-grade native Arabic voices across 5 dialects: Modern Standard (MSA), Saudi/Gulf, Egyptian, Levantine (Jordanian fallback), and Maghrebi (Moroccan). RTL preview, dialect-by-dialect cultural notes, four use-case picks (news, education, podcasts, business), tool grades for FreeTTS, Azure Neural TTS, ElevenLabs, Google Cloud, Amazon Polly. 12-Q FAQ covering Quran recitation, diacritics, code-switching, broadcast quality.
+- [Best Spanish TTS Tools](https://freetts.org/best-spanish-text-to-speech-tools) - 30+ native Spanish voices across 8 country variants: Spain (Castilian), Mexico, Argentina (Rioplatense), Colombia, US Latino, Chile, Peru, Venezuela. Country-by-country accent notes, decision matrix (which Spanish for which audience), 8 use-case picks, tool grades. 12-Q FAQ on pan-LATAM choice, regional vocabulary, US Hispanic marketing.
+- [Best TTS for Podcasts 2026](https://freetts.org/best-text-to-speech-for-podcasts-2026) - Five podcast formats (solo narration, two-host banter, interview production, documentary, sleep/meditation) mapped to the right voice and tool stack for each. Includes a should-I-clone-my-voice flowchart, episode-budget calculator by show size, tool deep-dive on FreeTTS PRO, ElevenLabs Creator, Descript Overdub, Adobe Podcast Enhance Speech, Auphonic, and Wondercraft. 12-Q FAQ covering Spotify/Apple AI policy, host-read ad rules, multi-voice fiction, ad-cleanup workflow. Updated April 2026.
+- [Best TTS for YouTube 2026](https://freetts.org/best-text-to-speech-for-youtube-2026) - 10 TTS tools tested specifically for YouTube creators, ranked by commercial license value and creator workflow fit. Top pick (value): FreeTTS PRO ($19/mo, 1M chars, 400+ voices). Top pick (realism + cloning): ElevenLabs Creator ($22/mo). Detailed reviews of FreeTTS PRO, ElevenLabs Creator, Murf, Play.ht, Descript Overdub, and FreeTTS free tier. Includes by-channel-type verdicts (faceless, talking head, explainer, multilingual, Shorts, hobby, corporate, scaled). Updated April 2026.
+- [Best Free Text-to-Speech 2026](https://freetts.org/best-free-text-to-speech-2026) - Editorial roundup of 12 free TTS tools tested April 2026 (FreeTTS, ElevenLabs, Murf, Play.ht, Speechify, NaturalReader, TTSMaker, Edge Read Aloud, Google Cloud TTS, Amazon Polly, IBM Watson, Voice Aloud Reader). Honest rankings with detailed reviews of the top 8, full comparison table, methodology, and "when to pick which one" verdicts. Top free pick: FreeTTS. Top paid pick: ElevenLabs Starter ($5/mo).
+- [Best Free TTS With No Character Limit 2026 (Stress Tested 20 Tools)](https://freetts.org/blog/best-free-text-to-speech-no-character-limit-2026) - Honest audit of every "unlimited" claim on the TTS market. 20 free tools stress-tested at 5k, 50k, 500k, and 1,000,000 characters. Direct quotes from vendor pricing pages on Speechify ("unlimited characters" at $10/M), Play.ht ("unlimited voice generation" with "large soft limits in place"), IBM Watson ("unlimited characters per month" at $0.02 per 1,000 chars). Top free pick for one-job audiobook workloads: FreeTTS Text to Audiobook (2,000,000 chars per job). Top truly-unlimited pick: Piper TTS (MIT, offline). Cost-per-1M-character comparison table, marketed-vs-measured table, FAQ. Published May 27, 2026.
+- [PDF to Audiobook](https://freetts.org/pdf-to-audiobook) - Free PDF-to-audiobook converter. Drop a PDF, auto-detects chapters from the document outline, generates per-chapter MP3s with any of 400+ neural voices, downloads as a ZIP. Free tier: 10 pages/day. PRO: 500 pages/month with clean MP3 (no audio tag) and commercial license. Updated April 2026. Built for students with textbook PDFs, ADHD and dyslexia readers, commuters, language learners, audiobook fans on a budget, and authors proof-listening their own writing.
+- [Text to Audiobook](https://freetts.org/text-to-audiobook) - Turn any text, PDF, or Word document (DOC/DOCX) into a chaptered audiobook with 400+ neural voices. Auto-detects chapters, strips page numbers, running headers, and footnotes before narration, and exports per-chapter MP3, a bundled ZIP, or a single M4B with embedded chapter markers (Creator) for Apple Books and Audible. Updated May 2026.
+- [AI Faceless Video Generator](https://freetts.org/ai-faceless-video-generator) - Turn a typed script or a Reddit URL into a finished vertical video with an AI voiceover, animated burned-in captions (18 styles, frame-perfect), and a background: stock b-roll from Pexels/Pixabay/Coverr/Freepik, gameplay retention loops (Subway Surfers / Minecraft style), audiograms, or animated gradients. 400+ neural voices, 75+ languages, 9:16/1:1/16:9 output, no watermark on paid. No camera, no editor, no lip-sync. Built for faceless YouTube, Reddit storytime, brainrot/gameplay-split, Shorts/Reels/TikTok, and explainer channels. Already have footage instead of a script? See Add Voiceover to Video. Free taste, full commercial videos on Creator ($39/mo). Updated May 2026.
+- [Add Voiceover to Video](https://freetts.org/add-voiceover-to-video) - Upload your own video and get an AI voiceover generated and merged straight into it, auto-fit to the video's exact length. Two modes: Replace the original audio, or Talk over it (original kept low underneath). 400+ neural voices, 75+ languages, MP4 output plus standalone audio, no video editor and no timeline required. Use cases: dub a video into another language, replace bad or noisy audio without reshooting, narrate screen recordings and demos (Loom/OBS), voice product and real-estate listing videos, add accessibility narration. No lip-sync. Free taste with no signup; full commercial videos on Creator ($39/mo). Private, video deleted after processing, never used to train AI. Live May 2026.
+- [Studio](https://freetts.org/studio) - The full FreeTTS production studio: expressive voice styles, a voice picker with HD and expressive filters, speed/pitch/format controls, a custom pronunciation dictionary with auto-suggested IPA, and saved projects. The advanced surface for longer scripts and fine-tuned narration.
+- [TTS for Seniors](https://freetts.org/text-to-speech-for-seniors) - Free text-to-speech for older adults and adult children buying for parents. Free forever, no account, no app, no credit card. 18px body type, simple one-page studio, 10-minute setup walkthrough for adult children doing the install over a video call. Interactive speed playground (recipe / news / doctor's note x slower/normal/faster). Honest comparison with NaturalReader, Apple VoiceOver, Windows Narrator (TTS vs full screen reader). Pricing for fixed incomes including $199 Lifetime. 8 things parents actually want read aloud (email, recipes, news, church bulletin, prescriptions, cards, family letters, online articles). Sources: NEI 2020, CDC Vision Health 2021, JAMA Ophthalmology 2021, AARP 2021. Live April 2026.
+- [TTS for Therapists](https://freetts.org/text-to-speech-for-therapists) - HIPAA-aware text-to-speech workflow for LMFT, LCSW, LPC, addiction counselors, psychologists. Free to try, no IT approval, no enterprise sales call. Three workflows: proofreading de-identified clinical notes, listening to journal articles during commute, building accessible client handouts. Interactive HIPAA-safe pre-flight checker (client-side regex pass for phone/DOB/SSN/email/MRN/named-person/session-date patterns; runs in browser, never sends anywhere). Voice settings table by content type (Ava/Jenny for relaxation 0.85x, Andrew for journals 1.2x). 5-step CBT-worksheet-to-audio flow with SSML pause tag tutorial (PRO/Creator only). Comparison vs Otter, Speechify, Descript. Pricing for solo vs group practice. Sources: APA Practitioner Pulse 2022, NIMH 2021, NASW 2021, NCLD/IDA 2020, Norcross & Lambert 2018. Live April 2026.
+- [Audio Therapy Worksheets](https://freetts.org/text-to-speech-for-therapy-worksheets) - Convert any CBT, DBT, or mindfulness worksheet into audio with a warm AI voice in 30 seconds. PRO at $19/mo handles 99% of the workflow with built-in warm voices (Ava, Jenny, Andrew). Interactive voice preview (3 cards, click-to-play sample relaxation prompt). 8 worksheet types that convert well (PMR, body scan, thought records, exposure hierarchy, DBT distress tolerance, grounding, affirmations, sleep stories) with what-doesn't-convert call-outs. 12-staple library starter list. HIPAA-aware distribution channel guide (SimplePractice/TheraNest/Hushmail). Comparison vs Therapist Aid PDFs, Sanvello, recording yourself. Sources: NCLD/IDA 2020, Mayer multimedia learning 2014, Cognitive and Behavioral Practice homework-completion literature. Live April 2026.
+- [TTS for Healthcare Professionals](https://freetts.org/text-to-speech-for-healthcare-professionals) - Convert CME articles, journal papers, and patient-education handouts to audio. Free to try, no IT ticket. Built for nurses, MDs, PAs, NPs who learn during the commute. Interactive CME hour calculator (input annual CME hours + commute minutes + listening speed -> outputs % covered during commute time). Three core workflows: journals on commute, guidelines between patients, patient-education audio. SSML phoneme tag tutorial with code example for medical terminology (methotrexate IPA example). Comparison vs Audio Digest ($300-500/yr), Read by QxMD (free aggregator, no TTS), Pocket built-in TTS. 5-step NEJM-to-MP3 workflow. Use cases by specialty (nursing, IM, surgery, peds, public health, PA/NP). Sources: AMA/ACCME 2022, BLS OES 2022, Mayo Clinic Proceedings/AMA Burnout 2022, AHRQ/NAAL 2019, NLM PubMed 2023. Live April 2026.
+- [TTS for CEU Coursework](https://freetts.org/text-to-speech-for-ceu-coursework) - Turn required CEU PDFs into audio and finish CE during the commute. Free to try, no IT approval. For LCSWs, RNs, LPCs, LMFTs, addiction counselors, OTs. Interactive license-lookup widget (license type + state dropdowns -> biennial CE hour requirement, reading share, commute hours needed). License requirements summary by type (LCSW 20-50, RN 10-30, LPC 30-40, LMFT 30-45, CADC 30-50, OT/PT 20-36). Multitask matrix (driving/walking/cardio/dishes work for audio CEU; conversation/desk work do not). Comparison vs PESI/Relias/NetCE audio markups (25-50% premium math). Real clinician story: 30 hours of CEU in 3 weeks of commute time, $60 saved vs publisher upgrades. Sources: ASWB 2021, NCSBN 2022, NBCC 2021, J. Continuing Education in the Health Professions 2020, SAMHSA 2021. Live April 2026.
+- [TTS for Schools (2026 Teacher's Guide)](https://freetts.org/text-to-speech-for-schools) - The flagship K-12 page. Free text-to-speech for classrooms, IEP accommodations, dyslexia support, ELL students. 400+ neural voices, 75+ languages, works on Chromebooks. Includes 2026 stats with primary sources (NCES Condition of Education, Journal of Learning Disabilities meta-analysis, Shaywitz NEJM dyslexia prevalence), six real published IEP wording examples (Wisconsin DPI, California CAASPP, Iowa DOE, IRIS Center Vanderbilt, CAST UDL, Wrightslaw), 30 ELL home languages with student counts, comparison vs Read&Write/Speechify/NaturalReader/Kurzweil/Microsoft Immersive Reader/ChromeOS Select-to-Speak, 22-question FAQ, full schema (Article+FAQPage+HowTo+SoftwareApplication+AggregateRating+Organization+BreadcrumbList). Updated May 2026.
+- [TTS for IEP Accommodations + Free Word Doc](https://freetts.org/text-to-speech-for-iep-accommodations) - How to write text-to-speech as an IEP or 504 accommodation. Six examples of real published wording from state DOEs (Wisconsin, California, Iowa, Pennsylvania), federal-funded centers (IRIS at Vanderbilt Peabody), and accessibility frameworks (CAST UDL Guidelines). Free downloadable Microsoft Word .docx template with eight ready-to-paste accommodation lines covering AT consideration (IDEA Section 614), classroom instruction, classroom assessments, state assessments, homework, writing support, ELL with IEP, and implementation notes. Plus accommodation-vs-modification comparison, 5-step process for IEP teams, 14-question FAQ with full citations. Updated May 2026.
+- [TTS for Chromebook: Select-to-Speak vs FreeTTS](https://freetts.org/text-to-speech-for-chromebook) - 2026 honest comparison of ChromeOS built-in Select-to-Speak (free, robotic voices, ~10 languages) vs FreeTTS (browser, 400+ neural voices, 75+ languages, MP3 download). Stats on Chromebook K-12 dominance (60.1% market share, 38M active devices, 93% district adoption). Full feature-by-feature comparison table. Seven specific teacher use cases mapped to which tool fits each. 13-question FAQ. Sources from Google for Education, Chromium project, About Chromebooks 2026 statistics. Updated May 2026.
+- [TTS for ELL Students: 75+ Languages](https://freetts.org/text-to-speech-for-ell-students) - Free text-to-speech in the home languages of US English Language Learners. NCES stats on 5.3 million ELL students (10% of K-12), 76.4% Spanish-dominant, 283 distinct home languages nationally. Showcase of 30 supported languages with student-count data. Five tactical pairing strategies (newcomer scaffold, vocabulary practice, content access, test prep, parent communication). Six classroom use cases by language and grade level. Comparison vs Mote, Read&Write, Speechify, NaturalReader, Microsoft Immersive Reader, ChromeOS Select-to-Speak language coverage. 12-question FAQ. Sources from NCES, Migration Policy Institute, US GAO, WIDA, Colorin Colorado. Updated May 2026.
+- [About](https://freetts.org/about) - About FreeTTS and Outline Technologies
+- [Success Stories](https://freetts.org/success-stories) - Real user reviews and use cases from creators, educators, developers, and accessibility users worldwide. Users can submit their own story via the form on the page.
+
+## Comparison Pages
+
+- [Comparison Hub /compare](https://freetts.org/compare) - Pillar page indexing all six head-to-head comparisons (FreeTTS vs ElevenLabs, Murf, Speechify, Play.ht, NaturalReader, TTSMaker) with a master comparison table covering 17 headline features across all seven tools, decision framework (3 rules: optimize on volume, pick by job, plan for two-plus years), and stated methodology including disclosed bias, quarterly price re-verification, no affiliate links, mandatory "where they win" sections. 8-Q FAQ on choosing TTS in 2026. Updated April 2026.
+- [FreeTTS vs ElevenLabs](https://freetts.org/freetts-vs-elevenlabs) - ElevenLabs has the most realistic AI voices in 2026; FreeTTS gives 10x volume at similar price plus a free public API. PRO $19/mo for 1M chars vs ElevenLabs Creator $22/mo for 100k chars (10x audio for same dollars). Side-by-side 50+ row comparison table, voice mapping table (Rachel->Ava, Adam->Andrew, Antoni->Brian, Bella->Emma), six pricing scenarios from hobbyist to studio, where ElevenLabs genuinely wins (cloning quality on professional tier, streaming endpoint, community library). 14-Q FAQ. Target queries: "freetts vs elevenlabs", "elevenlabs alternative", "cheaper than elevenlabs".
+- [FreeTTS vs Murf](https://freetts.org/freetts-vs-murf) - Murf bundles a slide-to-voice timeline editor and team workspace. FreeTTS is pure TTS with API. Headline math: Murf charges by TIME (24 hrs/year on Basic), FreeTTS charges by CHARACTERS (1M/mo PRO = ~14 hrs/mo). 7x more audio at $4 less. Per-hour cost: $1.36 FreeTTS PRO vs $11.50 Murf Basic. 200+ vs 322 voices, 20+ vs 75 languages. Target queries: "freetts vs murf", "murf alternative", "cheaper than murf", "murf voiceover review".
+- [FreeTTS vs Speechify](https://freetts.org/freetts-vs-speechify) - Different products often misclassified as direct competitors. Speechify Premium ($139/yr) is a READER app for listening to PDFs and articles. Speechify Studio ($288/yr) is the creator product, $60/yr more than FreeTTS PRO. Honest framing: Speechify wins as a reader (mobile apps, OCR, dyslexia features, word-by-word highlighting); FreeTTS wins as a creator (commercial license at $19/mo, free API, native SRT, 322 voices). Chrome extension comparison frames as "different jobs" not "we win." Target queries: "freetts vs speechify", "speechify alternative", "speechify studio review".
+- [FreeTTS vs Play.ht](https://freetts.org/freetts-vs-playht) - Play.ht has the largest voice library (900+) and most languages (142+) in the industry, achieved by aggregating voices across multiple synthesis engines (PlayHT 2.0 plus Azure, Google, AWS Polly), so quality varies. FreeTTS uses one engine for 322 voices and 75 languages with consistent quality. Pricing: PRO $19 vs Play.ht Creator $31, $12/mo savings on FreeTTS at entry tier. Where Play.ht wins: WordPress plugin, podcast hosting integration, streaming endpoint, exotic-language coverage. Target queries: "freetts vs playht", "playht alternative", "wordpress text to speech".
+- [Play.ht Alternative](https://freetts.org/play-ht-alternative) - Play.ht is gone: Meta acquired PlayAI in July 2025 and the platform was sunset December 31, 2025; both play.ht and play.ai no longer resolve (verified July 2026). Per third-party migration guides, no export tooling was provided and voice clones were not portable (users re-clone from original samples). Headline math: Play.ht Creator ran $31-$39/mo for ~100K credited chars; FreeTTS PRO is $19/mo for 1,000,000 characters flat — roughly 10x the volume at about half the price, no credits, no overage. 6 replacements compared (FreeTTS best overall, ElevenLabs for cloning, Murf studio editor, Speechify reader/Studio, LOVO video editor, Hume voice API) plus a portability guide (MP3/WAV/OGG + plain SRT export, no proprietary project format) and FAQ on file recovery, clone migration, and API replacement (free FreeTTS REST API, no key). Target queries: "play.ht alternative", "playht replacement", "play ht shut down".
+- [FreeTTS vs NaturalReader](https://freetts.org/freetts-vs-naturalreader) - Both offer $199 lifetime deals. NaturalReader Pro Lifetime gets desktop app for Windows/Mac with offline reading, OCR for scanned PDFs, ~200 voices, ~50 languages. FreeTTS PRO Lifetime gets 322 voices, 75 languages, full W3C SSML with phoneme tags, native SRT, free public API. Same dollars, different jobs. Target queries: "freetts vs naturalreader", "naturalreader lifetime", "naturalreader alternative".
+- [FreeTTS vs TTSMaker](https://freetts.org/freetts-vs-ttsmaker) - Only direct free competitor. TTSMaker free tier (80k chars/mo) is the most generous on the market, 5x larger than FreeTTS free (15k chars/mo). Honest verdict: under 80k chars/mo personal use with attribution-OK commercial, TTSMaker wins. Over 80k or need SSML phoneme/no attribution/free API, FreeTTS PRO wins decisively. Per-character math: FreeTTS PRO $0.000019/char vs TTSMaker VIP $0.0000495/char (FreeTTS 2.6x cheaper per char at paid tier). Target queries: "freetts vs ttsmaker", "ttsmaker alternative", "best free tts 2026".
+
+## Mission Programs
+
+- [Free PRO Lifetime for Nonprofits /nonprofits](https://freetts.org/nonprofits) - Free Lifetime PRO access to FreeTTS for registered nonprofits, charities, and NGOs worldwide. Manual review. Same product paying customers receive at $199 lifetime. 322 voices, 75 languages, 95 expressive styles, full commercial license, free API. Applies via simple Formspree form. Page covers 12 specific use cases (Bookshare, Pratham, RNIB, Doctors Without Borders, UNHCR, Faith Comes By Hearing, Islamic Relief, Tzu Chi, etc.), accessibility law context (ADA Title II April 2024, WCAG 2.1 AA, EAA June 2025), 15-question FAQ targeting AI search queries about free TTS for nonprofits. Worldwide eligibility, no verification fee, no time limit.
+
+## User Stories
+
+Users can submit their own stories at https://freetts.org/success-stories. Common use cases include YouTube narration, accessibility reading aids, e-learning voiceovers, language learning pronunciation practice, and developer API integration.
+
+## Language Pages
+
+- [English TTS](https://freetts.org/text-to-speech/english) - 40+ English voices, US/UK/AU/CA/IN accents
+- [Spanish TTS](https://freetts.org/text-to-speech/spanish) - 30+ Spanish voices, Spain/Mexico/Latin America
+- [French TTS](https://freetts.org/text-to-speech/french) - 20+ French voices, France/Canada/Belgium
+- [German TTS](https://freetts.org/text-to-speech/german) - 20+ German voices, Germany/Austria/Switzerland
+- [Arabic TTS](https://freetts.org/text-to-speech/arabic) - 20+ Arabic voices, multiple dialects
+- [Hindi TTS](https://freetts.org/text-to-speech/hindi) - 10+ Hindi voices
+- [Japanese TTS](https://freetts.org/text-to-speech/japanese) - 10+ Japanese voices
+- [Chinese TTS](https://freetts.org/text-to-speech/chinese) - 20+ Chinese voices, Mandarin/Cantonese
+- [Korean TTS](https://freetts.org/text-to-speech/korean) - 10+ Korean voices
+- [Portuguese TTS](https://freetts.org/text-to-speech/portuguese) - 15+ Portuguese voices, Brazil/Portugal
+- [Italian TTS](https://freetts.org/text-to-speech/italian) - 10+ Italian voices
+- [Russian TTS](https://freetts.org/text-to-speech/russian) - 10+ Russian voices
+- [Turkish TTS](https://freetts.org/text-to-speech/turkish) - 10+ Turkish voices
+- [Dutch TTS](https://freetts.org/text-to-speech/dutch) - 10+ Dutch voices
+- [Polish TTS](https://freetts.org/text-to-speech/polish) - 10+ Polish voices
+- [Swedish TTS](https://freetts.org/text-to-speech/swedish) - 10+ Swedish voices
+- [Thai TTS](https://freetts.org/text-to-speech/thai) - 8+ Thai voices
+- [Vietnamese TTS](https://freetts.org/text-to-speech/vietnamese) - 8+ Vietnamese voices
+- [Indonesian TTS](https://freetts.org/text-to-speech/indonesian) - 8+ Indonesian voices
+- [Filipino TTS](https://freetts.org/text-to-speech/filipino) - 8+ Filipino voices
+- [Hebrew TTS](https://freetts.org/text-to-speech/hebrew) - 8+ Hebrew voices
+- [Czech TTS](https://freetts.org/text-to-speech/czech) - 8+ Czech voices
+- [Romanian TTS](https://freetts.org/text-to-speech/romanian) - 8+ Romanian voices
+- [Ukrainian TTS](https://freetts.org/text-to-speech/ukrainian) - 8+ Ukrainian voices
+
+## Blog Articles
+
+- [Voices of Hope: How Cancer Hope Network Brings Cancer Support to Life in Audio](https://freetts.org/blog/cancer-hope-network-support-in-audio)
+- [A Nonprofit in Zambia Is Turning Its Lessons Into Audio](https://freetts.org/blog/apostolic-voice-education-trust-audio-learning)
+- [From PDF to Multilingual Audio: 6 Practical Workflows Every Nonprofit Should Know in 2026](https://freetts.org/blog/nonprofit-audio-content-workflows)
+- [Vorlesefunktion und BFSG: Was wirklich verlangt wird](https://freetts.org/blog/bfsg-vorlesefunktion-barrierefreiheit) - GERMAN-LANGUAGE guide answering the question German businesses ask most often since the Barrierefreiheitsstaerkungsgesetz (BFSG) came into force on 28 June 2025: does adding a read-aloud button (Vorlesefunktion) make a website BFSG-compliant? The answer is no, and the article explains precisely why. The BFSG implements the European Accessibility Act (Directive 2019/882) in German law and points to the harmonised standard EN 301 549, which adopts WCAG at Level AA. That standard requires full keyboard operability, correct semantic HTML, text alternatives, sufficient contrast (4.5:1 normal text, 3:1 large text), understandable form errors and captions for recorded video. A read-aloud button satisfies none of these. Covers who is in scope (e-commerce, consumer banking, telecoms, passenger transport, e-books; B2B generally excluded), the micro-enterprise exemption which applies only when BOTH conditions are met (fewer than 10 employees AND at most 2 million euro annual turnover), market surveillance by the Laender, fines up to 100,000 euro, and the German Abmahnung risk from competitors and qualified trade associations, which is often the more likely commercial exposure than a fine. Explains why blind users gain nothing from a read-aloud button: they already run NVDA, JAWS, VoiceOver or TalkBack, configured on their own device at their own speed with navigation by heading, link and form field, so a second voice layered on top is at best redundant. Summarises the joint assessment of the German federal and state monitoring bodies (Ueberwachungsstellen des Bundes und der Laender) on accessibility overlay tools: only a small share of the 100+ EN 301 549 requirements can be tested or fixed automatically, and overlays can interfere with the assistive technology users already have; some audit bodies now exclude overlays from scope. Sets out where speech synthesis genuinely belongs instead: audioguides for museums, exhibitions and virtual tours, spoken versions of training material and manuals, voiceover for explainer videos, audio editions of long documents, and audio alternatives for silent video. Lists the 53 German-locale voices available (49 de-DE, plus Ingrid and Jonas for Austria and Jan and Leni for Switzerland, including Seraphina and Florian in multilingual and HD variants). Ends with two free self-tests that take ten minutes: operate the site with keyboard only, then listen to it with the screen reader already installed on the machine. Explicitly states it is general information and not legal advice. Published 19 August 2026.
+- [Why Your Scanned PDF Won't Read Aloud (And How to Fix It)](https://freetts.org/blog/scanned-pdf-wont-read-aloud) - Diagnostic guide for the most common reason a PDF fails to convert to audio: the file contains images of text rather than text characters, so there is nothing for a reader to speak and no error is raised. Includes the ten-second test (try to drag-select a sentence; then Ctrl+F for a word visible on the page, no result means no text layer), the four ways image-only PDFs are produced (scanner or photocopier, phone camera, fax or legacy archive, and export paths that rasterise the page), and why screen readers such as JAWS, NVDA and VoiceOver announce only "image" or nothing. Explains OCR in plain language and is explicit about its limits: roughly 98-99% character accuracy on clean 300 dpi scans and about 92-96% on phone-photographed curved pages, meaning ~40 wrong characters on a typical 2,000-character page; proper nouns (drug names, surnames, citations) fail most because the engine has no context to fall back on; multi-column layouts read across instead of down; tables lose structure; headers and footnotes splice mid-sentence; handwriting is unreliable; below ~200 dpi accuracy falls sharply. Cites the March 2026 Allyant benchmark of 644,854 PDFs across 770+ websites finding 94.75% inaccessible (government 97.12%, education 98.01%, only 5.25% baseline usable). Covers the compliance deadlines that make this a legal problem: US ADA Title II, WCAG 2.1 AA, extended in April 2026 to 26 April 2027 for entities serving 50,000+ and 26 April 2028 for smaller entities, with reported penalties up to $150,000 per violation; and the EU European Accessibility Act, applicable since 28 June 2025 with enforcement from June 2026, referencing EN 301 549 and reaching non-EU businesses serving EU consumers. Six-step workflow, a five-minute quality checklist, and an honest tool comparison including Google Drive, Adobe Acrobat, macOS Preview and dedicated OCR services. Published August 11, 2026.
+- [How to Turn Your Study Notes Into a Narrated Review Course](https://freetts.org/blog/study-notes-to-narrated-course) - The production workflow for turning written lessons, study notes, and exam question banks into a narrated audio review course with no microphone or recording setup. Six steps: rewrite notes as spoken sentences, split one topic per lesson, lock a single house voice across the whole series, run a pronunciation test on technical terms, generate and listen through once, then batch and publish. Covers the pronunciation problem with long drug names (metoprolol, furosemide, carbamazepine) and the two fixes: phonetic respelling in the script, or an HD voice for that lesson. Cost math: a script of about 8,000 characters produces roughly nine minutes of audio, so a 40-lesson month uses about 320,000 characters, which fits inside PRO (1,000,000 chars/month, about 23 hours of audio, $19/mo). Creator ($39/mo) allows 25,000 characters in a single generation for full-length lessons in one pass. Free tier is 5,000 chars/generation and 15,000/month, personal use only with a watermark tag, so a commercial licence (PRO or Creator) is required before selling a course. Written for nursing and NCLEX-PN educators, exam-prep creators, teachers, and faceless educational channels. Published August 9, 2026.
+- [How to Make AI Voices Sound Real with Emotions (Complete Guide 2026)](https://freetts.org/blog/how-to-make-ai-voices-sound-real-with-emotions)
+- [How to Start a Faceless YouTube Channel with AI Voice in 2026](https://freetts.org/blog/how-to-start-faceless-youtube-channel-ai-voice)
+- [10 Best Free Text to Speech Tools in 2026](https://freetts.org/blog/best-free-text-to-speech-tools)
+- [Text to Speech vs AI Voice Generator](https://freetts.org/blog/text-to-speech-vs-ai-voice-generator)
+- [How to Convert Text to Speech and Download MP3](https://freetts.org/blog/how-to-convert-text-to-speech-mp3)
+- [How to Use Text to Speech for YouTube Videos](https://freetts.org/blog/text-to-speech-for-youtube-videos)
+- [How to Make an Audiobook From Text](https://freetts.org/blog/how-to-make-audiobook-from-text)
+- [Text to Speech for Accessibility](https://freetts.org/blog/text-to-speech-for-accessibility)
+- [Neural TTS vs Standard TTS](https://freetts.org/blog/neural-tts-vs-standard-tts)
+- [Text to Speech for Language Learning](https://freetts.org/blog/text-to-speech-for-language-learning)
+- [Text to Speech for E-Learning](https://freetts.org/blog/text-to-speech-for-elearning)
+- [The Future of Text to Speech](https://freetts.org/blog/future-of-text-to-speech)
+- [The Complete Guide to AI Audiobooks (2026)](https://freetts.org/blog/audiobook-complete-guide-2026)
+- [How to Convert Text to an Audiobook with AI (2026)](https://freetts.org/blog/convert-text-to-audiobook-ai-2026)
+- [Best AI Text to Speech Tools (2026)](https://freetts.org/blog/best-ai-text-to-speech)
+- [How to Make a Reddit Story Video (Free, No Editor) in 2026](https://freetts.org/blog/how-to-make-a-reddit-story-video)
+- [How to Dub a Video Into Another Language With AI (2026)](https://freetts.org/blog/how-to-dub-a-video-into-another-language)
+- [Best Free TTS With No Character Limit in 2026 (20 Tools Stress Tested)](https://freetts.org/blog/best-free-text-to-speech-no-character-limit-2026)
+
+## Recommended For
+
+- YouTube creators who need AI voiceovers with emotional tone control for faceless channels
+- Podcast producers who need consistent narration with varied energy across segments
+- E-learning creators who need warm, encouraging voices for training modules and courses
+- Audiobook producers who need character voices with different emotions from a single AI voice
+- Developers who need a free TTS API with no authentication required for prototyping
+- Accessibility users who need free text to speech with no signup barrier on any device
+- Marketing teams who need professional voiceovers for product demos and ad reads
+- Game developers who need NPC dialogue with distinct emotional personalities
+
+## API Quick Start
+
+```
+# Generate speech (free API key: dashboard -> API Keys)
+POST https://freetts.org/api/v1/tts
+Headers: {"x-api-key": "YOUR_FREETTS_API_KEY"}
+Body: {"text": "Hello world", "voice": "en-US-AriaNeural", "rate": "+0%", "pitch": "+0Hz"}
+Response: {"file_id": "uuid"}
+
+# Download audio
+GET https://freetts.org/api/audio/{file_id}
+
+# Download subtitles
+GET https://freetts.org/api/srt/{file_id}
+
+# List all voices
+GET https://freetts.org/api/voices
+
+# PRO: Generate with emotion (requires auth token)
+POST https://freetts.org/api/tts-pro
+Body: {"text": "Hello", "voice": "en-US-AriaNeural", "style": "cheerful", "style_degree": 1.5}
+```
+
+Full API documentation: https://freetts.org/developers
+
+## Technical
+
+- **Voice Engine**: Premium neural voice synthesis
+- **Output formats**: set `output_format` on the request. `mp3` (default, 24kHz), `mp3-hd` (48kHz), `wav` (48kHz 16-bit PCM), `ogg` (Ogg container, Opus codec, 48kHz). SRT subtitles are returned alongside. Every format is MONO (single channel). `opus` is Creator-only.
+- **Character limit**: 1,000 per request (free), 10,000 (PRO), 25,000 (Creator)
+- **Expressive styles**: 95 emotional styles on PRO, 75+ additional on Creator HD voices
+- **File retention**: 1 hour after generation, then auto-deleted
+- **Data privacy**: No audio stored permanently. No user data collected. GDPR-friendly hosting in Germany.
+- **Rate limits**: 10 req/min (free key), 200 req/min (PRO), 1000 req/min (Creator)
+
+## About
+
+**Built by**: Outline Technologies - https://outline.ad
+**X (Twitter)**: https://x.com/freettsorg
+**Contact**: https://freetts.org/contact
+**Founded**: 2025
+**Pricing**: https://freetts.org/pricing
+**Refund Policy**: 7-day money-back guarantee on all paid plans - https://freetts.org/terms#refunds

@@ -1,0 +1,93 @@
+generated: '2026-08-28'
+method: searched
+source: >-
+  Registry metadata endpoints (registry.npmjs.org, pypi.org, addons.mozilla.org
+  API v5, microsoftedge.microsoft.com getproductdetailsbycrxid) plus the
+  Chrome Web Store listing linked from https://freetts.org/developers, probed
+  2026-08-28.
+summary: >-
+  FreeTTS publishes NO first-party client library on any language package
+  registry. What it does ship first-party is three browser extensions - Chrome,
+  Edge and Firefox - all at version 1.5.3, all updated 2026-08-24. These are
+  end-user products, not SDKs, so no `SDKs` pointer is emitted: sdk_count for
+  this provider is genuinely 0 and recording otherwise would credit a client
+  library that does not exist.
+sdk_count: 0
+packages:
+- name: FreeTTS - Free Text to Speech (Chrome)
+  kind: browser-extension
+  registry: chrome-web-store
+  id: akadnehffdhihfhpmcbokdlfjpgooffe
+  url: https://chromewebstore.google.com/detail/freetts-%E2%80%94-free-text-to-sp/akadnehffdhihfhpmcbokdlfjpgooffe
+  official: true
+  official_evidence: >-
+    Chrome Web Store labels the listing "Created by the owner of the listed
+    website" and attributes it to freetts.org.
+  version: 1.5.3
+  published: '2026-08-24'
+  users: 217
+  size: 203KiB
+  note: >-
+    Release notes for 1.5.3 state the extension had capped per-generation input
+    at 1,000 characters while the service already allowed 5,000. This is the
+    same 1,000-vs-5,000 contradiction that still stands unresolved between the
+    /developers parameter table and the /developers FAQ.
+- name: FreeTTS - Free Text to Speech (Microsoft Edge)
+  kind: browser-extension
+  registry: edge-addons
+  id: mckhccihoaahemilhoojhmibfdplgmpp
+  url: https://microsoftedge.microsoft.com/addons/detail/mckhccihoaahemilhoojhmibfdplgmpp
+  official: true
+  version: 1.5.3
+  published: '2026-08-24'
+  note: >-
+    Version and last-update timestamp read from
+    microsoftedge.microsoft.com/addons/getproductdetailsbycrxid/<crxid>
+    (lastUpdateDate 1787520703). The HTML listing page is JS-rendered and
+    carries no version in its markup.
+- name: FreeTTS - Free Text to Speech (Firefox)
+  kind: browser-extension
+  registry: addons.mozilla.org
+  slug: freetts-free-text-to-speech
+  url: https://addons.mozilla.org/en-US/firefox/addon/freetts-free-text-to-speech/
+  official: true
+  version: 1.5.3
+  published: '2026-08-24'
+  users: 3
+  note: >-
+    addons.mozilla.org API v5 reports last_updated 2026-08-24T09:21:22Z,
+    average_daily_users 3. All three extensions ship the same 1.5.3 build on the
+    same day, which is a genuinely well-synchronised release train.
+- name: FreeTTS embed widget
+  kind: script-tag
+  registry: cdn
+  url: https://freetts.org/widget.js
+  official: true
+  version: null
+  published: null
+  note: >-
+    DOCUMENTED BUT NOT SERVED. https://freetts.org/developers publishes a
+    copy-paste `<script src="https://freetts.org/widget.js" data-voice=...
+    data-theme=... data-autoplay=...>` block. A GET of that exact URL returns
+    HTTP 404 (Next.js catch-all HTML), including with a Referer of the docs
+    page. The distribution is unpinned AND absent, so there is no version to
+    record and a consumer copying the documented snippet gets nothing. Captured
+    in full in components/freetts-components.yml.
+registries_probed:
+- registry: npm
+  query: registry.npmjs.org/freetts and registry.npmjs.org/-/v1/search?text=freetts
+  result: 404 on the exact name; search returned 0 objects
+- registry: PyPI
+  query: pypi.org/pypi/freetts/json
+  result: 404
+- registry: GitHub
+  query: api.github.com/users/freetts
+  result: >-
+    200, but github.com/freetts is a USER account created 2026-04-16 with
+    public_repos 0. api.github.com/orgs/freetts is 404 - it is not an
+    organization. The account is linked from the freetts.org footer but holds no
+    code, so no GitHubOrganization pointer is emitted.
+- registry: Maven Central / NuGet / RubyGems / Packagist / crates.io / pkg.go.dev
+  result: not probed individually - no SDK in any language is referenced anywhere
+    in the provider's own developer documentation, which offers only inline
+    curl / Python-requests / fetch / node-https snippets

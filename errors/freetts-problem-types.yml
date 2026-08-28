@@ -1,0 +1,89 @@
+generated: '2026-08-28'
+method: probed
+source: >-
+  Live probes of https://freetts.org/api/* on 2026-08-28, enriched from the
+  error and rate-limit sections of https://freetts.org/developers
+format: non-standard
+rfc9457: false
+envelope:
+  media_type: application/json
+  shape: '{"detail": "<human-readable string>"}'
+  fields:
+  - name: detail
+    type: string
+    description: >-
+      The entire error payload. There is no machine-readable code, no type URI,
+      no title/status/instance split, and no field-level validation array.
+  note: >-
+    This is the FastAPI default HTTPException envelope, unmodified. An agent
+    cannot branch on anything but the HTTP status and an English prose string,
+    so "Missing x-api-key header" and "Invalid API key" - two genuinely
+    different remediations - are distinguishable only by string matching. This
+    is the single largest error-semantics gap for this provider and it is a
+    small fix: adding a stable `code` field to the existing envelope would cost
+    nothing and change the integration story.
+problem_types:
+- status: 401
+  detail: Missing x-api-key header
+  observed: true
+  observed_at: POST /api/v1/tts with no headers
+  cause: no credential presented
+  remediation: >-
+    Mint a key in the dashboard under API Keys and send it as the x-api-key
+    request header.
+- status: 401
+  detail: Invalid API key
+  observed: true
+  observed_at: POST /api/v1/tts with a deliberately invalid key
+  cause: key not recognised, revoked, or belongs to an unverified account
+  remediation: >-
+    Re-mint the key. Docs state keys are issued only to email-verified accounts
+    and that revocation takes effect instantly.
+- status: 404
+  detail: Audio not found
+  observed: true
+  observed_at: GET /api/audio/00000000-0000-0000-0000-000000000000
+  cause: >-
+    Unknown file_id, or the retention window has expired - 1 hour on free, 30
+    days on PRO, 90 days on Creator.
+  remediation: regenerate; docs state a regeneration takes 1-3 seconds
+- status: 404
+  detail: SRT not found
+  observed: true
+  observed_at: GET /api/srt/00000000-0000-0000-0000-000000000000
+  cause: same as Audio not found; the SRT shares the file_id and the retention
+    window
+- status: 404
+  detail: Not Found
+  observed: true
+  observed_at: GET /api/docs, /api/redoc, /api/v1/openapi.json, /api/v1, /api/schema
+  cause: unrouted path on the API application
+  note: >-
+    Distinguishable from the website's own 404, which returns 67,991 bytes of
+    Next.js HTML rather than JSON. The JSON 404 is how the API host boundary was
+    established during contract discovery.
+- status: 405
+  detail: Method Not Allowed
+  observed: true
+  observed_at: GET /api/v1/tts and GET /api/tts-pro
+  cause: wrong HTTP method; both TTS endpoints are POST-only
+  note: >-
+    The 405 on GET /api/tts-pro is the only independent confirmation that the
+    PRO endpoint named in llms.txt actually exists on the production host.
+- status: 429
+  detail: Too many requests. Please wait a minute.
+  observed: false
+  source: https://freetts.org/developers
+  cause: rate limit exceeded for the window
+  remediation: >-
+    Wait 60 seconds. No Retry-After header is emitted, so the 60 seconds is a
+    documentation fact rather than a runtime signal.
+not_documented:
+- >-
+  No 400 / validation error shape is published, so the response to an
+  out-of-range rate (-50%..+100%), pitch (-20Hz..+20Hz), unknown voice
+  ShortName, or over-limit text is unknown without a key.
+- >-
+  No quota-exhaustion error is published, despite chars_used / chars_limit being
+  documented as present on success responses.
+- No 5xx catalogue.
