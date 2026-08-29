@@ -9,6 +9,17 @@ description: >-
   locales sourced from Google (788), Microsoft Edge (318) and Microsoft Azure (304), of which the 318 Edge voices
   are the free tier. FreeTTS publishes no OpenAPI, no apis.json, no MCP server and no agent card.
 url: https://raw.githubusercontent.com/api-evangelist/free-tts/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 created: '2026-08-28'
 modified: '2026-08-28'
 specificationVersion: '0.21'
