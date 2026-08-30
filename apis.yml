@@ -27,6 +27,16 @@ image: https://freetts.org/images/og-image.webp
 tags:
 - Text-to-Speech
 - Speech Synthesis
+- AI-voice
+- Audio
+- Media
+- Accessibility
+- Speech-to-Text
+- Content Creation
+- Developer Tools
+tags_raw:
+- Text-to-Speech
+- Speech Synthesis
 - AI Voice
 - Audio
 - Media
@@ -65,6 +75,16 @@ apis:
   humanURL: https://freetts.org/developers
   baseURL: https://freetts.org/api
   tags:
+  - Text-to-Speech
+  - Speech Synthesis
+  - AI-voice
+  - Audio
+  - Media
+  - Accessibility
+  - Speech-to-Text
+  - Content Creation
+  - Developer Tools
+  tags_raw:
   - Text-to-Speech
   - Speech Synthesis
   - AI Voice
